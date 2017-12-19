@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Overwatch</string>
+    <string name="battle_tag">BattleTag</string>
+    <string name="battle_id">BattleId</string>
+    <string name="btn_submit">Submit</string>
+    <string name="detail_activity">2nd Activity</string>
+</resources>
