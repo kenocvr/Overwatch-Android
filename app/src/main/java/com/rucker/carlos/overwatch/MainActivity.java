@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.rucker.carlos.overwatch.api.Client;
@@ -19,6 +20,7 @@ import retrofit2.Response;
 
 public class MainActivity extends Activity {
 
+    private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
     private Button btnSubmit;
     private EditText battleTag;
@@ -38,6 +40,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        progress = findViewById(R.id.pd);
+        progress.setVisibility(ProgressBar.INVISIBLE);
         initViews();
     }
 
@@ -48,7 +52,7 @@ public class MainActivity extends Activity {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("MAUMAUUUU:::: ", "onClick: CLICKITY");
+                progress.setVisibility(ProgressBar.VISIBLE);
                 loadJson();
             }
         });
@@ -79,7 +83,8 @@ public class MainActivity extends Activity {
                 @Override
                 public void onResponse(Call<Pojo> call, Response<Pojo> response) {
                 String dummy = response.body().getUs().getStats().getCompetitive().getGameStats().getAllDamageDone().toString();
-                    Log.d("JSON:::: ", dummy);
+
+                progress = findViewById(R.id.pd);
                 activityStart(dummy);
 
                 }

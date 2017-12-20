@@ -40,4 +40,19 @@
         app:layout_constraintTop_toBottomOf="@+id/BattleTag"/>
 
 
+    <ProgressBar
+        android:id="@+id/pd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        android:minHeight="50dp"
+        android:minWidth="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_submit"/>
+
 </android.support.constraint.ConstraintLayout>
