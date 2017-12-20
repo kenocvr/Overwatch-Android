@@ -1,6 +1,7 @@
 package com.rucker.carlos.overwatch;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +19,19 @@ import retrofit2.Response;
 
 public class MainActivity extends Activity {
 
+    public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
     private Button btnSubmit;
     private EditText battleTag;
     private EditText battleId;
+
+    public String getBattleTag() {
+        battleTag = (EditText) findViewById(R.id.BattleTag);
+        return battleTag.toString();
+    }
+
+    public String getBattleId() {
+        return battleId.getText().toString();
+    }
 
 
     @Override
@@ -29,6 +40,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initViews();
     }
+
+
 
     private void initViews() {
         btnSubmit = (Button) findViewById(R.id.btn_submit);
@@ -41,19 +54,34 @@ public class MainActivity extends Activity {
         });
     }
 
+    public void activityStart(String extra){
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("EXTRA_MESSAGE", extra);
+        startActivity(intent);
+    }
+
     private void loadJson(){
+        battleTag = findViewById(R.id.BattleTag);
+        battleId = findViewById(R.id.BattleId);
+
+        String strBattleTag = battleTag.getText().toString();
+        String strBattleId = battleId.getText().toString();
+        String battleTagComplete = strBattleTag+"-"+strBattleId;
+        Log.d("BATTLETAGCOMPLETE::: ", battleTagComplete);
         try{
             Client client = new Client();
             Service apiService = client
                     .getClient()
                     .create(Service.class);
-            Call<Pojo> call = apiService.getJson();
+            Call<Pojo> call = apiService.getJson(battleTagComplete);
 
             call.enqueue(new Callback<Pojo>() {
                 @Override
                 public void onResponse(Call<Pojo> call, Response<Pojo> response) {
                 String dummy = response.body().getUs().getStats().getCompetitive().getGameStats().getAllDamageDone().toString();
                     Log.d("JSON:::: ", dummy);
+                activityStart(dummy);
+
                 }
 
                 @Override
@@ -70,4 +98,6 @@ public class MainActivity extends Activity {
 
 
     }
+
+
 }
