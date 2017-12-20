@@ -20,6 +20,10 @@ import retrofit2.Response;
 
 public class MainActivity extends Activity {
 
+    //Todo: (1) Add Nav Drawer
+    //Todo: (2) Import OW Fonts
+    //Todo: (3) Implement Color / Style
+
     private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
     private Button btnSubmit;
