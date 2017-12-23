@@ -15,9 +15,33 @@ public class DetailActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String someVariable = extras.getString("EXTRA_MESSAGE");
-            TextView textView = findViewById(R.id.throwawayText);
-            textView.setText(someVariable);
+            String damageTotal = extras.getString("DAMAGE_TOTAL");
+            String winRate = extras.getString("WIN_RATE");
+            String tier = extras.getString("TIER");
+            //String avatar = extras.getString("AVATAR");
+            //String tierImage = extras.getString("TIER_IMAGE");
+            String level = extras.getString("LEVEL");
+            String level00 = level + "00";
+            String rank = extras.getString("RANK");
+            TextView tvDamageTotal = findViewById(R.id.total_damage);
+            tvDamageTotal.setText(damageTotal);
+
+            String eliminationsInGameTotal = extras.getString("ELIMINATIONS_IN_GAME_TOTAL");
+            TextView tvEliminationsInGameTotal = findViewById(R.id.in_game_elims_total);
+            tvEliminationsInGameTotal.setText(eliminationsInGameTotal);
+
+            TextView tvWinrate = findViewById(R.id.win_rate);
+            tvWinrate.setText(winRate);
+
+            TextView tvTier = findViewById(R.id.tier);
+            tvTier.setText(tier);
+
+            TextView tvLevel = findViewById(R.id.level);
+            tvLevel.setText(level00);
+
+            TextView tvRank = findViewById(R.id.rank);
+            tvRank.setText(rank);
+
         }
 
        // String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);

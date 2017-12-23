@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.rucker.carlos.overwatch.api.Client;
 import com.rucker.carlos.overwatch.api.Service;
+import com.rucker.carlos.overwatch.model.GameStats____;
+import com.rucker.carlos.overwatch.model.OverallStats____;
 import com.rucker.carlos.overwatch.model.Pojo;
 
 import retrofit2.Call;
@@ -90,6 +92,7 @@ public class MainActivity extends Activity {
         sampleTextView.setTypeface(owFont);
         btnSubmit = (Button) findViewById(R.id.btn_submit);
         btnSubmit.setTypeface(owFont);
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,9 +103,7 @@ public class MainActivity extends Activity {
     }
 
     public void activityStart(String extra){
-        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-        intent.putExtra("EXTRA_MESSAGE", extra);
-        startActivity(intent);
+
     }
 
     private void loadJson(){
@@ -123,10 +124,31 @@ public class MainActivity extends Activity {
             call.enqueue(new Callback<Pojo>() {
                 @Override
                 public void onResponse(Call<Pojo> call, Response<Pojo> response) {
-                String dummy = response.body().getUs().getStats().getCompetitive().getGameStats().getAllDamageDone().toString();
+                 GameStats____ dummy = response.body().getUs().getStats().getCompetitive().getGameStats();
+                 OverallStats____ overallStats = response.body().getUs().getStats().getCompetitive().getOverallStats();
+                    final String rank = overallStats.getComprank().toString();
+                    final String level = overallStats.getLevel().toString();
+                    final String winRate = overallStats.getWinRate().toString();
+                    final String tier = overallStats.getTier().toString();
+                    final String tierImage = overallStats.getTierImage().toString();
+                    final String avatar = overallStats.getAvatar().toString();
+                    final String damageTotal = dummy.getAllDamageDone().toString();
+                    final String eliminationsMostInGame = dummy.getEliminationsMostInGame().toString();
+
 
                 progress = findViewById(R.id.pd);
-                activityStart(dummy);
+
+                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                    intent.putExtra("DAMAGE_TOTAL", damageTotal);
+                    intent.putExtra("ELIMINATIONS_IN_GAME_TOTAL", eliminationsMostInGame);
+                    intent.putExtra("RANK",rank);
+                    intent.putExtra("WIN_RATE",winRate);
+                    intent.putExtra("TIER",tier);
+                    intent.putExtra("LEVEL",level);
+                    intent.putExtra("TIER_IMAGE",tierImage);
+                    intent.putExtra("AVATAR",avatar);
+                    startActivity(intent);
+
 
                 }
 

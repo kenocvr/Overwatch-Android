@@ -4,4 +4,16 @@
     <string name="battle_id">BattleId</string>
     <string name="btn_submit">Submit</string>
     <string name="detail_activity">2nd Activity</string>
+    <string name="lb_tier">TIER</string>
+    <string name="lb_rank">RANK</string>
+    <string name="lb_win_rate">WIN RATE</string>
+    <string name="lb_level">LEVEL</string>
+    <string name="level">level here</string>
+    <string name="tier">tier here</string>
+    <string name="rank">rank here</string>
+    <string name="win_rate">win rate here</string>
+    <string name="elims_most_in_game">most elim in game here</string>
+    <string name="lb_elims_most_in_game">MOST ELIMS IN GAME</string>
+
+
 </resources>
