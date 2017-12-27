@@ -6,7 +6,8 @@ import android.widget.TextView;
 
 public class DetailActivity extends Activity {
 
-
+    //Todo: move api call to DetailActivity.
+    //Todo: Parent activity to pass BattleTag to DetailActivity as intent extra.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

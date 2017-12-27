@@ -16,7 +16,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.rucker.carlos.overwatch.api.ApiAdapter;
 import com.rucker.carlos.overwatch.api.Client;
 import com.rucker.carlos.overwatch.api.Service;
 import com.rucker.carlos.overwatch.model.GameStats____;
@@ -39,11 +38,11 @@ public class MainActivity extends Activity {
     private EditText battleId;
     private TextView sampleTextView;
     public TextView savedBattleTag;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         savedBattleTag = findViewById(R.id.savedBattleTag);
         progress = findViewById(R.id.pd);
         progress.setVisibility(ProgressBar.INVISIBLE);
@@ -60,25 +59,53 @@ public class MainActivity extends Activity {
             savedBattleTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*Todo: The view is not updating
-                    Todo: Because the activity is starting before the response arrives.
+                            /*SO META*/
+                    try{
+                        Client client = new Client();
+                        Service apiService = client
+                                .getClient()
+                                .create(Service.class);
+                        Call<Pojo> call = apiService.getJson(dummyCheck);
 
-                    * */
-                    ApiAdapter apiAdapter = new ApiAdapter();
-                    apiAdapter.apiCaller("ThistleFoot-11552");
+                        call.enqueue(new Callback<Pojo>() {
+                            @Override
+                            public void onResponse(Call<Pojo> call, Response<Pojo> response) {
+                                GameStats____ dummy = response.body().getUs().getStats().getCompetitive().getGameStats();
+                                OverallStats____ overallStats = response.body().getUs().getStats().getCompetitive().getOverallStats();
+                                final String rank = overallStats.getComprank().toString();
+                                final String level = overallStats.getLevel().toString();
+                                final String winRate = overallStats.getWinRate().toString();
+                                final String tier = overallStats.getTier().toString();
+                                final String tierImage = overallStats.getTierImage().toString();
+                                final String avatar = overallStats.getAvatar().toString();
+                                final String damageTotal = dummy.getAllDamageDone().toString();
+                                final String eliminationsMostInGame = dummy.getEliminationsMostInGame().toString();
 
 
-                    Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-                    intent.putExtra("DAMAGE_TOTAL", apiAdapter.passDmgMostInGame());
-                    intent.putExtra("ELIMINATIONS_IN_GAME_TOTAL", apiAdapter.passElimsMostInGame());
-                    intent.putExtra("RANK",apiAdapter.passRank());
-                    intent.putExtra("WIN_RATE",apiAdapter.passWinRate());
-                    intent.putExtra("TIER",apiAdapter.passTier());
-                    intent.putExtra("LEVEL",apiAdapter.passLevel());
-                   // intent.putExtra("TIER_IMAGE",apiAdapter.passTier());
-                    intent.putExtra("AVATAR",apiAdapter.passAvatar());
+                                progress = findViewById(R.id.pd);
 
-                    startActivity(intent);
+                                Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+                                intent.putExtra("DAMAGE_TOTAL", damageTotal);
+                                intent.putExtra("ELIMINATIONS_IN_GAME_TOTAL", eliminationsMostInGame);
+                                intent.putExtra("RANK",rank);
+                                intent.putExtra("WIN_RATE",winRate);
+                                intent.putExtra("TIER",tier);
+                                intent.putExtra("LEVEL",level);
+                                intent.putExtra("TIER_IMAGE",tierImage);
+                                intent.putExtra("AVATAR",avatar);
+
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<Pojo> call, Throwable t) {
+                                Log.d("Error", t.getMessage());
+                                Toast.makeText(MainActivity.this, "Error Fetching Data!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }catch (Exception e){
+                        Log.d("Error", e.getMessage());
+                    }
 
                 }
             });
@@ -129,8 +156,8 @@ public class MainActivity extends Activity {
             call.enqueue(new Callback<Pojo>() {
                 @Override
                 public void onResponse(Call<Pojo> call, Response<Pojo> response) {
-                 GameStats____ dummy = response.body().getUs().getStats().getCompetitive().getGameStats();
-                 OverallStats____ overallStats = response.body().getUs().getStats().getCompetitive().getOverallStats();
+                    GameStats____ dummy = response.body().getUs().getStats().getCompetitive().getGameStats();
+                    OverallStats____ overallStats = response.body().getUs().getStats().getCompetitive().getOverallStats();
                     final String rank = overallStats.getComprank().toString();
                     final String level = overallStats.getLevel().toString();
                     final String winRate = overallStats.getWinRate().toString();
@@ -152,9 +179,9 @@ public class MainActivity extends Activity {
                     intent.putExtra("TIER_IMAGE",tierImage);
                     intent.putExtra("AVATAR",avatar);
 
-                   // SharedPreferences.Editor editor = sharedpreferences.edit();
-                   // editor.putString("battleTagComplete", battleTagComplete);
-                   // editor.apply();
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString("battleTagComplete", battleTagComplete);
+                    editor.apply();
                     savedBattleTag.setText(battleTagComplete);
 
                     startActivity(intent);

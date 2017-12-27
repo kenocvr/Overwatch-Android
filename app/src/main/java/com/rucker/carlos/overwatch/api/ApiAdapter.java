@@ -1,7 +1,10 @@
 package com.rucker.carlos.overwatch.api;
 
+import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
+import com.rucker.carlos.overwatch.DetailActivity;
 import com.rucker.carlos.overwatch.MainActivity;
 import com.rucker.carlos.overwatch.model.GameStats____;
 import com.rucker.carlos.overwatch.model.OverallStats____;
@@ -26,6 +29,11 @@ public class ApiAdapter extends MainActivity{
     public String winRate;
     public String level;
 
+
+    private Context context;
+    public ApiAdapter(Context context){
+        this.context = context;
+    }
 
     public void apiCaller(String endpoint){
 
@@ -61,6 +69,8 @@ public class ApiAdapter extends MainActivity{
 
                     winRate = overallStats.getWinRate().toString();
                     pullOutWinRate(winRate);
+                    Intent i = new Intent(context.getApplicationContext(), DetailActivity.class);
+                    context.startActivity(i);
 
                 }
 
