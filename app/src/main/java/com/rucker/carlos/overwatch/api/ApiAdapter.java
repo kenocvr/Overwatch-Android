@@ -20,6 +20,7 @@ import retrofit2.Response;
 
 public class ApiAdapter extends MainActivity{
 
+
     public String rank;
     public String elims;
     public String avatar;
@@ -37,7 +38,7 @@ public class ApiAdapter extends MainActivity{
 
     public void apiCaller(String endpoint){
 
-        try{
+        //try{
             Client client = new Client();
             final Service apiService = client
                     .getClient()
@@ -82,9 +83,9 @@ public class ApiAdapter extends MainActivity{
             });
 
 
-        }catch (Exception e){
-            Log.d("Error", e.getMessage());
-        }
+//        }catch (Exception e){
+//            Log.d("Error", e.getMessage());
+//        }
     }
 
     public void pullOutDummy(Response<Pojo> dummy) {

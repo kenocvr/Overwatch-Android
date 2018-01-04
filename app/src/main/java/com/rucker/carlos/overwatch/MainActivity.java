@@ -31,6 +31,7 @@ public class MainActivity extends Activity {
     public static final String MyPREFERENCES = "myPrefs";
     SharedPreferences sharedpreferences;
 
+    //Todo: Take response/stats and give to List object List<Pojo>
     private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
     private Button btnSubmit;
@@ -51,7 +52,7 @@ public class MainActivity extends Activity {
 
     }
 
-    private void savedBattleTag() {
+    public void savedBattleTag() {
         SharedPreferences sp = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         final String dummyCheck = sp.getString("battleTagComplete",null);
         if(dummyCheck != null){
@@ -59,8 +60,8 @@ public class MainActivity extends Activity {
             savedBattleTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                            /*SO META*/
-                    try{
+
+//                    try{
                         Client client = new Client();
                         Service apiService = client
                                 .getClient()
@@ -80,6 +81,8 @@ public class MainActivity extends Activity {
                                 final String avatar = overallStats.getAvatar().toString();
                                 final String damageTotal = dummy.getAllDamageDone().toString();
                                 final String eliminationsMostInGame = dummy.getEliminationsMostInGame().toString();
+
+                                //Todo: Create List of stats
 
 
                                 progress = findViewById(R.id.pd);
@@ -103,9 +106,9 @@ public class MainActivity extends Activity {
                                 Toast.makeText(MainActivity.this, "Error Fetching Data!", Toast.LENGTH_LONG).show();
                             }
                         });
-                    }catch (Exception e){
-                        Log.d("Error", e.getMessage());
-                    }
+//                    }catch (Exception e){
+//                        Log.d("Error", e.getMessage());
+//                    }
 
                 }
             });
