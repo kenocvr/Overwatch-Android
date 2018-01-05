@@ -28,6 +28,13 @@ public class DetailActivity extends Activity {
         //Todo: loop through collection of listItems.
         // Todo: use the listItems.add(<i>)
 
+        for(int i = 0; i <=10; i++){
+            ListItem listItem = new ListItem(
+                    "heading" +(i+1),
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            );
+            listItems.add(listItem);
+        }
         adapter = new ViewAdapter(listItems, this);
         recyclerView.setAdapter(adapter);
 

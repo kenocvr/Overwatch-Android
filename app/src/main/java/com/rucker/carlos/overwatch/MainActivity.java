@@ -182,10 +182,10 @@ public class MainActivity extends Activity {
                     intent.putExtra("TIER_IMAGE",tierImage);
                     intent.putExtra("AVATAR",avatar);
 
-                    SharedPreferences.Editor editor = sharedpreferences.edit();
-                    editor.putString("battleTagComplete", battleTagComplete);
-                    editor.apply();
-                    savedBattleTag.setText(battleTagComplete);
+//                    SharedPreferences.Editor editor = sharedpreferences.edit();
+//                    editor.putString("battleTagComplete", battleTagComplete);
+//                    editor.apply();
+//                    savedBattleTag.setText(battleTagComplete);
 
                     startActivity(intent);
                 }
