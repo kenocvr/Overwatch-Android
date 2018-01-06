@@ -28,44 +28,49 @@ public class DetailActivity extends Activity {
         //Todo: loop through collection of listItems.
         // Todo: use the listItems.add(<i>)
 
-        for(int i = 0; i <=10; i++){
-            ListItem listItem = new ListItem(
-                    "heading" +(i+1),
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-            );
-            listItems.add(listItem);
-        }
-        adapter = new ViewAdapter(listItems, this);
-        recyclerView.setAdapter(adapter);
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String damageTotal = extras.getString("DAMAGE_TOTAL");
             String winRate = extras.getString("WIN_RATE");
             String tier = extras.getString("TIER");
-            //String avatar = extras.getString("AVATAR");
-            //String tierImage = extras.getString("TIER_IMAGE");
+            String avatar = extras.getString("AVATAR");
+            String tierImage = extras.getString("TIER_IMAGE");
             String level = extras.getString("LEVEL");
             String level00 = level + "00";
             String rank = extras.getString("RANK");
-//            TextView tvDamageTotal = findViewById(R.id.total_damage);
-//            tvDamageTotal.setText(damageTotal);
-
             String eliminationsInGameTotal = extras.getString("ELIMINATIONS_IN_GAME_TOTAL");
-//            TextView tvEliminationsInGameTotal = findViewById(R.id.in_game_elims_total);
-//            tvEliminationsInGameTotal.setText(eliminationsInGameTotal);
 
-//            TextView tvWinrate = findViewById(R.id.win_rate);
-//            tvWinrate.setText(winRate);
 
-//            TextView tvTier = findViewById(R.id.tier);
-//            tvTier.setText(tier);
+            ListItem dmgItem = new ListItem(damageTotal, "Total Damage");
 
-//            TextView tvLevel = findViewById(R.id.level);
-//            tvLevel.setText(level00);
 
-//            TextView tvRank = findViewById(R.id.rank);
-//            tvRank.setText(rank);
+            ListItem winItem = new ListItem(
+                    winRate, "Win %"
+            );
+            ListItem tierItem = new ListItem(
+                    tier, "Tier"
+            );
+            ListItem levelItem = new ListItem(
+                    level + level00, "Level"
+            );
+            ListItem rankItem = new ListItem(
+                    rank, "Rank"
+            );
+            ListItem elimsItem = new ListItem(
+                    eliminationsInGameTotal, "Elims in Game Total"
+            );
+            listItems.add(rankItem);
+            listItems.add(tierItem);
+            listItems.add(dmgItem);
+            listItems.add(winItem);
+            listItems.add(tierItem);
+            listItems.add(levelItem);
+            listItems.add(elimsItem);
+
+            adapter = new ViewAdapter(listItems, this);
+            recyclerView.setAdapter(adapter);
 
         }
 
