@@ -31,7 +31,9 @@ public class MainActivity extends Activity {
     public static final String MyPREFERENCES = "myPrefs";
     SharedPreferences sharedpreferences;
 
-    //Todo: Take response/stats and give to List object List<Pojo>
+    // Todo: Add Firebase Authentication dependencies
+    // Todo: Add Firebase Authentication
+    // Todo: Create User model based on Authentication to retrieve searched BattleTags
     private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
     private Button btnSubmit;

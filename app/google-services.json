@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "788708706818",
+    "firebase_url": "https://overwatch-c3fc1.firebaseio.com",
+    "project_id": "overwatch-c3fc1",
+    "storage_bucket": "overwatch-c3fc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788708706818:android:866ee4abb9cb36ca",
+        "android_client_info": {
+          "package_name": "com.rucker.carlos.overwatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788708706818-03g7s5bc42jjkfu6k9c2iiphpa88j4kl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn3D5Rt3bgnPUo5hlh2N-HLIKly4YeTWE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,11 +24,6 @@ public class DetailActivity extends Activity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         listItems = new ArrayList<>();
 
-        //Todo: create a collection of listItems.
-        //Todo: loop through collection of listItems.
-        // Todo: use the listItems.add(<i>)
-
-
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
