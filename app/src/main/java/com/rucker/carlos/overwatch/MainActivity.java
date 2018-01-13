@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.rucker.carlos.overwatch.api.Client;
 import com.rucker.carlos.overwatch.api.Service;
 import com.rucker.carlos.overwatch.model.GameStats____;
@@ -28,10 +34,10 @@ import retrofit2.Response;
 
 public class MainActivity extends Activity {
 
+    private FirebaseAuth mAuth;
     public static final String MyPREFERENCES = "myPrefs";
     SharedPreferences sharedpreferences;
 
-    // Todo: Add Firebase Authentication dependencies
     // Todo: Add Firebase Authentication
     // Todo: Create User model based on Authentication to retrieve searched BattleTags
     private ProgressBar progress;
@@ -46,11 +52,43 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
         savedBattleTag = findViewById(R.id.savedBattleTag);
         progress = findViewById(R.id.pd);
         progress.setVisibility(ProgressBar.INVISIBLE);
         savedBattleTag();
         initViews();
+
+    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }
+    private void signInAnonymously() {
+
+        mAuth.signInAnonymously()
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d("TAG", "signInAnonymously:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            //updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("TAG", "signInAnonymously:failure", task.getException());
+                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            //updateUI(null);
+                        }
+
+
+                    }
+                });
 
     }
 
@@ -84,7 +122,7 @@ public class MainActivity extends Activity {
                                 final String damageTotal = dummy.getAllDamageDone().toString();
                                 final String eliminationsMostInGame = dummy.getEliminationsMostInGame().toString();
 
-                                //Todo: Create List of stats
+
 
 
                                 progress = findViewById(R.id.pd);
@@ -148,7 +186,7 @@ public class MainActivity extends Activity {
 
 
 
-    private void loadJson(){
+    public void loadJson(){
         String strBattleTag = battleTag.getText().toString();
         String strBattleId = battleId.getText().toString();
         final String battleTagComplete = strBattleTag+"-"+strBattleId;
