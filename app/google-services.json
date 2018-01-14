@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "788708706818-k4v870536uu86r0uk6qss073c8fnc6n1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rucker.carlos.overwatch",
+            "certificate_hash": "ff2629f2d8a05e722da23711c9f921e6f2ee4174"
+          }
+        },
+        {
           "client_id": "788708706818-03g7s5bc42jjkfu6k9c2iiphpa88j4kl.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "788708706818-03g7s5bc42jjkfu6k9c2iiphpa88j4kl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

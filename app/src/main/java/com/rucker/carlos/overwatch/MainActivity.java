@@ -35,10 +35,11 @@ import retrofit2.Response;
 public class MainActivity extends Activity {
 
     private FirebaseAuth mAuth;
-    public static final String MyPREFERENCES = "myPrefs";
-    SharedPreferences sharedpreferences;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
+    public static final String MyPREFERENCES = "myPrefs";
     // Todo: Add Firebase Authentication
+    // Todo: Store UniqueID to Firebase database
     // Todo: Create User model based on Authentication to retrieve searched BattleTags
     private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
@@ -53,6 +54,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+
         savedBattleTag = findViewById(R.id.savedBattleTag);
         progress = findViewById(R.id.pd);
         progress.setVisibility(ProgressBar.INVISIBLE);
@@ -67,30 +69,32 @@ public class MainActivity extends Activity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //updateUI(currentUser);
     }
-    private void signInAnonymously() {
+     public void signInAnonymously() {
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+         mAuth = FirebaseAuth.getInstance();
+         mAuth.createUserWithEmailAndPassword("kenocvr@gmail.com", "fluffy1543")
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+                             // Sign in success, update UI with the signed-in user's information
+                             Log.d("tag", "createUserWithEmail:success");
+                             FirebaseUser user = mAuth.getCurrentUser();
+                            // updateUI(user);
+                         } else {
+                             // If sign in fails, display a message to the user.
+                             Log.w("tag", "createUserWithEmail:failure", task.getException());
+                             Toast.makeText(MainActivity.this, "Authentication failed.",
+                                     Toast.LENGTH_SHORT).show();
+                            // updateUI(null);
+                         }
 
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("TAG", "signInAnonymously:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("TAG", "signInAnonymously:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
-                        }
-
-
-                    }
-                });
-
+                         // ...
+                     }
+                 });
     }
+
 
     public void savedBattleTag() {
         SharedPreferences sp = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -100,6 +104,7 @@ public class MainActivity extends Activity {
             savedBattleTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
 
 //                    try{
                         Client client = new Client();
@@ -190,6 +195,7 @@ public class MainActivity extends Activity {
         String strBattleTag = battleTag.getText().toString();
         String strBattleId = battleId.getText().toString();
         final String battleTagComplete = strBattleTag+"-"+strBattleId;
+        signInAnonymously();
         try{
             Client client = new Client();
             Service apiService = client
