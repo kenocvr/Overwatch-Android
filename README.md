@@ -1,4 +1,4 @@
 # A simple Overwatch Stats Android App
 
-Find any player's overwatch competitive or quickplay stats.
+Use any Overwatch BattleTag to find the player's competitive or quickplay stats.
 

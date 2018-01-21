@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +17,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rucker.carlos.overwatch.api.Client;
 import com.rucker.carlos.overwatch.api.Service;
 import com.rucker.carlos.overwatch.model.GameStats____;
@@ -27,12 +36,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends Activity {
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
 
     public static final String MyPREFERENCES = "myPrefs";
-    SharedPreferences sharedpreferences;
-
-    // Todo: Add Firebase Authentication dependencies
     // Todo: Add Firebase Authentication
+    // Todo: Store UniqueID to Firebase database
     // Todo: Create User model based on Authentication to retrieve searched BattleTags
     private ProgressBar progress;
     public static final String EXTRA_MESSAGE = "com.rucker.carlos.overwatch.MESSAGE";
@@ -46,6 +56,8 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mAuth = FirebaseAuth.getInstance();
+
         savedBattleTag = findViewById(R.id.savedBattleTag);
         progress = findViewById(R.id.pd);
         progress.setVisibility(ProgressBar.INVISIBLE);
@@ -53,6 +65,51 @@ public class MainActivity extends Activity {
         initViews();
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        //updateUI(currentUser);
+    }
+     public void signInAnonymously() {
+//
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+         mDatabase = FirebaseDatabase.getInstance().getReference();
+         mAuth = FirebaseAuth.getInstance();
+         mAuth.createUserWithEmailAndPassword("kenocvr@gmail.com", "fluffy1543")
+                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                     @Override
+                     public void onComplete(@NonNull Task<AuthResult> task) {
+                         if (task.isSuccessful()) {
+                             // Sign in success, update UI with the signed-in user's information
+
+                             Log.d("tag", "createUserWithEmail:success");
+                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            // updateUI(user);
+                         } else {
+                             // If sign in fails, display a message to the user.
+                             Log.w("tag", "createUserWithEmail:failure", task.getException());
+                             Toast.makeText(MainActivity.this, "Authentication failed.",
+                                     Toast.LENGTH_SHORT).show();
+                            // updateUI(null);
+                         }
+
+                         // ...
+                     }
+                 });
+         //mDatabase.getRoot().setValue("Test0");
+
+         //FirebaseUser user = mAuth.getCurrentUser();
+         //String uniqueID = user.getUid(); <== NULL
+        // String uniqueId = mAuth.getCurrentUser().getUid();
+        DatabaseReference mChild =  mDatabase.child("BattleTag");
+        mChild.setValue(battleTag.getText().toString());
+
+
+    }
+
 
     public void savedBattleTag() {
         SharedPreferences sp = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
@@ -62,6 +119,7 @@ public class MainActivity extends Activity {
             savedBattleTag.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
 
 //                    try{
                         Client client = new Client();
@@ -84,7 +142,7 @@ public class MainActivity extends Activity {
                                 final String damageTotal = dummy.getAllDamageDone().toString();
                                 final String eliminationsMostInGame = dummy.getEliminationsMostInGame().toString();
 
-                                //Todo: Create List of stats
+
 
 
                                 progress = findViewById(R.id.pd);
@@ -148,10 +206,11 @@ public class MainActivity extends Activity {
 
 
 
-    private void loadJson(){
+    public void loadJson(){
         String strBattleTag = battleTag.getText().toString();
         String strBattleId = battleId.getText().toString();
         final String battleTagComplete = strBattleTag+"-"+strBattleId;
+        signInAnonymously();
         try{
             Client client = new Client();
             Service apiService = client
