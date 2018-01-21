@@ -19,9 +19,12 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.rucker.carlos.overwatch.api.Client;
 import com.rucker.carlos.overwatch.api.Service;
 import com.rucker.carlos.overwatch.model.GameStats____;
@@ -33,9 +36,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends Activity {
-
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference mDatabase;
 
     public static final String MyPREFERENCES = "myPrefs";
     // Todo: Add Firebase Authentication
@@ -72,6 +75,7 @@ public class MainActivity extends Activity {
      public void signInAnonymously() {
 //
 //        FirebaseUser currentUser = mAuth.getCurrentUser();
+         mDatabase = FirebaseDatabase.getInstance().getReference();
          mAuth = FirebaseAuth.getInstance();
          mAuth.createUserWithEmailAndPassword("kenocvr@gmail.com", "fluffy1543")
                  .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -79,8 +83,10 @@ public class MainActivity extends Activity {
                      public void onComplete(@NonNull Task<AuthResult> task) {
                          if (task.isSuccessful()) {
                              // Sign in success, update UI with the signed-in user's information
+
                              Log.d("tag", "createUserWithEmail:success");
                              FirebaseUser user = mAuth.getCurrentUser();
+
                             // updateUI(user);
                          } else {
                              // If sign in fails, display a message to the user.
@@ -93,6 +99,15 @@ public class MainActivity extends Activity {
                          // ...
                      }
                  });
+         //mDatabase.getRoot().setValue("Test0");
+
+         //FirebaseUser user = mAuth.getCurrentUser();
+         //String uniqueID = user.getUid(); <== NULL
+        // String uniqueId = mAuth.getCurrentUser().getUid();
+        DatabaseReference mChild =  mDatabase.child("BattleTag");
+        mChild.setValue(battleTag.getText().toString());
+
+
     }
 
 
